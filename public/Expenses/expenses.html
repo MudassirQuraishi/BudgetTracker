@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
+    <link rel="stylesheet" href="expenses.css" />
+    <title>Kharcha Pani - Dashboard</title>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="container">
+        <div class="navbar-left">
+          <h1 class="navbar-title">Kharcha Pani</h1>
+        </div>
+        <div class="navbar-right">
+          <a href="#" class="navbar-link premium-button" id="premium-button"
+            >Buy Premium</a
+          >
+          <a href="#" class="navbar-link" id="manage-link">Manage Expense</a>
+          <a href="#" class="navbar-link" id="logout">Logout</a>
+          <!-- Added link -->
+        </div>
+        <div class="clearfix"></div>
+        <!-- Clear the float to separate the left and right sides -->
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="column">
+        <div class="row">
+          <form class="expense-form">
+            <h2>Expense</h2>
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Description"
+                id="expense-description"
+                required
+              />
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Amount"
+                id="expense-amount"
+                required
+              />
+              <select class="form-control" id="category">
+                <option value="category1">Category 1</option>
+                <option value="category2">Category 2</option>
+                <option value="category3">Category 3</option>
+                <option value="category4">Category 4</option>
+              </select>
+              <button class="btn add-expense-btn" id="expense-button">
+                Add Expense
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="row">
+          <form class="income-form">
+            <h2>Income</h2>
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Description"
+                id="income-description"
+                required
+              />
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Amount"
+                id="income-amount"
+                required
+              />
+              <button class="btn add-income-btn" id="add-income">
+                Add Income
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ... (previous code remains the same) ... -->
+      <!-- ... (previous code remains the same) ... -->
+      <!-- ... (previous code remains the same) ... -->
+      <div class="column">
+        <div class="row">
+          <div class="section">
+            <h2 class="section-title">Premium Features</h2>
+          </div>
+          <div class="card">
+            <p>Leaderboard content goes here.</p>
+            <button class="btn card-btn" id="showLeaderboard">
+              View Leaderboard
+            </button>
+          </div>
+          <div class="card">
+            <p>Report download content goes here.</p>
+            <button class="btn card-btn" id="download-report">
+              Download Report
+            </button>
+          </div>
+        </div>
+        <div class="row list-row">
+          <h2 class="section-title">Recent Expense</h2>
+          <ul class="list" id="user-list"></ul>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div id="leaderboardModal" class="modal">
+        <div class="modal-content">
+          <span class="close" id="closeModal">&times;</span>
+          <h2>Leaderboard</h2>
+          <ul class="list" id="leaderboardList">
+            <!-- List items will be added dynamically with JavaScript -->
+          </ul>
+        </div>
+      </div>
+      <!-- ... (rest of the code remains the same) ... -->
+
+      <!-- ... (rest of the code remains the same) ... -->
+
+      <!-- ... (rest of the code remains the same) ... -->
+    </div>
+    <script src="expenses.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  </body>
+</html>

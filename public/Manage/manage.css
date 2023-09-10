@@ -1,0 +1,154 @@
+/* Reset some default styles */
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar styles */
+.navbar {
+  background-color: #465361; /* Primary color */
+  height: 80px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  margin-bottom: 10px;
+}
+
+.navbar-title {
+  font-size: 25px;
+  color: #fff;
+  margin: 0;
+}
+
+/* Login form styles */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 100px);
+  margin-top: 10px;
+}
+/* Clear the float */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Navbar styles (same as previous CSS) */
+
+/* Container styles (same as previous CSS) */
+
+/* First Column styles */
+.column {
+  flex: 1;
+  margin-right: 10px;
+  margin-top: 50px;
+  /* Add some margin between columns */
+}
+.column.column-1 {
+  flex: 1;
+  margin-right: 10px;
+  align-items: center;
+  min-height: 600px;
+  margin-top: 50px;
+}
+
+select.form-control {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+ul.list {
+  list-style: none;
+  padding: 0;
+}
+
+ul.list li {
+  margin-bottom: 10px;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  min-width: 150px;
+  font-size: 16px;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+  max-height: 40px;
+  display: flex;
+  flex-direction: row;
+}
+
+.prevButton,
+.nextButton {
+  background-color: #007bff;
+  max-width: fit-content;
+  max-height: fit-content;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.prevButton:hover,
+.nextButton:hover {
+  background-color: #0056b3;
+}
+/* ... (previous CSS code remains the same) ... */
+/* ... (previous CSS code remains the same) ... */
+
+/* Second Column styles */
+.column {
+  flex: 1;
+  margin-right: 10px; /* Add some margin between columns */
+}
+
+.row {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 20px; /* Add some margin between rows */
+}
+
+.row .card {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.row.row-1 {
+  min-height: 300px;
+  display: inline;
+}
+.dash-title {
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 40px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.dash-data {
+  margin: 0 35px;
+}
+
+/* ... (continue with any additional styling you need) ... */
+
+/* ... (continue with any additional styling you need) ... */
+
+/* ... (continue with any additional styling you need) ... */

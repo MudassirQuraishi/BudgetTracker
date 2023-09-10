@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../Manage/manage.css" />
+    <link rel="stylesheet" href="../Expenses/expenses.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <title>Kharcha Pani - New Page</title>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="container">
+        <div class="navbar-left">
+          <h1 class="navbar-title">Kharcha Pani</h1>
+        </div>
+        <div class="navbar-right">
+          <a href="#" class="navbar-link premium-button" id="premium-button"
+            >Buy Premium</a
+          >
+          <a href="../Expenses/expenses.html" class="navbar-link"
+            >Back to Home</a
+          >
+          <a href="#" class="navbar-link" id="logout">Logout</a>
+          <!-- New link -->
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="column column-1">
+        <h2>Select Items to Display</h2>
+        <select class="form-control" id="per-page">
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="7">7</option>
+        </select>
+        <a href="" id="search-link"><i class="bx bx-search"></i></a>
+        <ul class="list" id="list-group"></ul>
+        <div class="pagination" id="pagination-div"></div>
+      </div>
+      <!-- second column -->
+      <div class="column column-2">
+        <!-- First Row -->
+        <div class="row row-1">
+          <div class="dash-title">
+            <h2>Dashboard</h2>
+          </div>
+          <div class="dash-data" id="dash-data">
+            <p id="dash-income">Income This Month : 0</p>
+            <p id="dash-expense">Expense This Month : 0</p>
+            <p id="dash-savings">Saving This Month : 0</p>
+          </div>
+        </div>
+
+        <!-- Second Row -->
+        <div class="row row-1">
+          <div class="dash-title">
+            <h2>Previous Reports</h2>
+          </div>
+          <div class="dash-data">
+            <ul class="dashboard-list" id="dashboard-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="manage.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  </body>
+</html>
