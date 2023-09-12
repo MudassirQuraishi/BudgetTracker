@@ -47,6 +47,7 @@ app.use(bodyParser.json());
 app.use(helmet());
 app.use(compression());
 app.use(morgan("combined", { stream: accessLogStream }));
+app.use(express.static(path.join(__dirname, "public")));
 
 //middleware
 app.use("/user", loginRoutes);
@@ -54,12 +55,10 @@ app.use("/expense", expenseRoutes);
 app.use("/purchase", purchaseRoutes);
 app.use("/premium", premiumRoutes);
 app.use("/password", resetRoutes);
+
 app.use((req, res) => {
-  res.send(path.join(__dirname, "/public/Login/login.html"));
+  res.sendFile(path.join(__dirname, `/public/${req.url}`));
 });
-// app.use((req, res) => {
-//   res.send(path.join(__dirname, `/public/${req.url}`));
-// });
 
 sequelize.sync().then(() => {
   const port = process.env.PORT;
