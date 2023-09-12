@@ -20,5 +20,4 @@ const Orders = sequelize.define("orders", {
     type: Sequelize.STRING,
   },
 });
-
 module.exports = Orders;

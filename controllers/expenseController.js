@@ -8,9 +8,8 @@ const sequelize = require("../utilities/database");
 //middleware functions
 
 //to save expense
-exports.saveDataToDatabase = async (req, res, next) => {
+exports.saveDataToDatabase = async (req, res) => {
   const t = await sequelize.transaction();
-  console.log(req.body, req.user);
   try {
     const data = await Expense.create(
       {
@@ -28,7 +27,9 @@ exports.saveDataToDatabase = async (req, res, next) => {
       { where: { id: req.user.id }, transaction: t }
     );
     await t.commit();
-    res.status(201).json(data);
+    res
+      .status(201)
+      .json({ success: true, message: "Succesfully added Expense", data });
   } catch (error) {
     await t.rollback();
     res.status(500).json({ error: "Error Adding Expense To The Database" });
@@ -36,7 +37,7 @@ exports.saveDataToDatabase = async (req, res, next) => {
 };
 
 //to delete expense
-exports.deleteFromDatabase = async (req, res, next) => {
+exports.deleteFromDatabase = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const id = req.params.id;
@@ -59,7 +60,7 @@ exports.deleteFromDatabase = async (req, res, next) => {
       { where: { id: req.user.id }, transaction: t }
     );
     await t.commit();
-    res.status(200).json({ message: "Deletion successful" });
+    res.status(200).json({ success: true, message: "Deletion successful" });
   } catch (error) {
     await t.rollback();
     res.status(500).json({ error: "Error Deleting Data From the Data Base" });
@@ -67,7 +68,7 @@ exports.deleteFromDatabase = async (req, res, next) => {
 };
 
 //to edit expense
-exports.editDataInDatabase = async (req, res, next) => {
+exports.editDataInDatabase = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const id = req.params.id;
@@ -108,7 +109,7 @@ exports.editDataInDatabase = async (req, res, next) => {
 };
 
 //to get all the data when page refresh happens
-exports.getAllDataFromDatabase = async (req, res, next) => {
+exports.getAllDataFromDatabase = async (req, res) => {
   try {
     const dbData = await Expense.findAll({ where: { UserId: req.user.id } });
     const data = dbData.map((data) => data.dataValues);
@@ -120,7 +121,6 @@ exports.getAllDataFromDatabase = async (req, res, next) => {
   }
 };
 exports.getPaginatedData = async (req, res) => {
-  console.log(req.query);
   const currentpage = JSON.parse(req.query.page) || 1;
   const limit = JSON.parse(req.query.count) || 3;
   const totalExpenses = await Expense.count({ where: { UserId: req.user.id } });
@@ -138,7 +138,7 @@ exports.getPaginatedData = async (req, res) => {
     hasPreviousPage: currentpage > 1,
     lastPage: Math.ceil(totalExpenses / limit),
   };
-  console.log(totalExpenses, responseData);
+
   res.status(200).json({
     success: true,
     message: "Succcessfully retrieved data.",
@@ -156,7 +156,6 @@ exports.addIncome = async (req, res) => {
         where: { id: req.user.id },
       }
     );
-    console.log(response);
     res
       .status(200)
       .json({ success: true, message: "income added successfully", response });

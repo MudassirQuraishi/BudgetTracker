@@ -4,7 +4,7 @@ const User = require("../models/userModel");
 //middleware functions
 
 //to show leaderboard
-exports.showLeaderboard = async (req, res, next) => {
+exports.showLeaderboard = async (req, res) => {
   try {
     const allUsers = await User.findAll({
       attributes: ["id", "userName", "totalExpense"],
@@ -14,7 +14,6 @@ exports.showLeaderboard = async (req, res, next) => {
     }));
 
     usersArray.sort((a, b) => b.data.totalExpense - a.data.totalExpense);
-    console.log(usersArray);
     res.status(200).json({ success: true, leaderboardData: usersArray });
   } catch (error) {
     res.status(500).json({ error: "Error showing leaderboard" });

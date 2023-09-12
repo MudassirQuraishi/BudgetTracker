@@ -32,7 +32,6 @@ function uploadToS3(data, name) {
 
 exports.downloadReport = async (req, res) => {
   const t = await sequelize.transaction();
-  console.log(req.user);
   try {
     const userExpenses = await Expense.findAll(
       {
@@ -61,7 +60,7 @@ exports.downloadReport = async (req, res) => {
 
 exports.showReports = async (req, res) => {
   try {
-    const response = await Reports.findAll({
+    await Reports.findAll({
       where: { UserId: req.user.id },
       attributes: ["fileUrl", "createdAt"],
     });

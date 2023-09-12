@@ -8,5 +8,4 @@ const sequelize = new Sequelize(schema, user, password, {
   dialect: "mysql",
   host: host,
 });
-
 module.exports = sequelize;

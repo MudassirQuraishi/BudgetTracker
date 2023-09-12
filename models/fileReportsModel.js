@@ -12,5 +12,4 @@ const Reports = sequelize.define("reports", {
     type: Sequelize.STRING,
   },
 });
-
 module.exports = Reports;

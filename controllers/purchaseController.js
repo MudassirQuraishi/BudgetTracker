@@ -9,7 +9,7 @@ const sequelize = require("../utilities/database");
 //middleware functions
 
 //to buy premium membership
-exports.buyPremium = async (req, res, next) => {
+exports.buyPremium = async (req, res) => {
   const key_id = process.env.RAZORPAY_KEY_ID;
   const key_secret = process.env.RAZORPAY_KEY_SECRET;
   try {
@@ -33,7 +33,7 @@ exports.buyPremium = async (req, res, next) => {
   }
 };
 
-exports.updateMembership = async (req, res, next) => {
+exports.updateMembership = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const prevData = await Order.findOne(
@@ -79,7 +79,7 @@ exports.updateMembership = async (req, res, next) => {
   }
 };
 
-exports.failedPurchase = async (req, res, next) => {
+exports.failedPurchase = async (req, res) => {
   const t = await sequelize.transaction();
   const orderid = req.body.error.metadata.order_id;
   const paymentid = req.body.error.metadata.payment_id;

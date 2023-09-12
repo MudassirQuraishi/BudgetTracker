@@ -8,7 +8,7 @@ const User = require("../models/userModel");
 //midddleware fucntions
 
 //for signup
-exports.signup = async (req, res, next) => {
+exports.signup = async (req, res) => {
   try {
     const saltRounds = 10;
     const password = req.body.password;
@@ -49,7 +49,7 @@ function generateAutheticationToken(data) {
 }
 
 //for login
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
   try {
     const data = await User.findAll({ where: { email: req.body.email } });
     if (data.length === 0) {

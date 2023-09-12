@@ -7,7 +7,7 @@ const uuid = require("uuid");
 const User = require("../models/userModel");
 const ForogotPassword = require("../models/passwordResetModel");
 
-exports.forgotPassword = async (req, res, next) => {
+exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
   const check = await User.findOne({ where: { email: email } });
 
@@ -60,7 +60,7 @@ exports.forgotPassword = async (req, res, next) => {
   }
 };
 
-exports.resetPassword = async (req, res, next) => {
+exports.resetPassword = async (req, res) => {
   const id = req.params.id;
   const user = await ForogotPassword.findOne({ where: { uuid: id } });
   if (user.dataValues.isActive) {
@@ -86,7 +86,7 @@ exports.resetPassword = async (req, res, next) => {
   }
 };
 
-exports.updatePassword = async (req, res, next) => {
+exports.updatePassword = async (req, res) => {
   const { newPassword } = req.query;
   const { id } = req.params;
   const passwordRequest = await ForogotPassword.findOne({

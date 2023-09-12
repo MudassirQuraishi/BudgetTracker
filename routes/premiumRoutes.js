@@ -5,6 +5,7 @@ const middleware = require("../middleware/authentication");
 
 const router = express.Router();
 
+//routes
 router.get(
   "/showLeaderboard",
   middleware.authenticateToken,

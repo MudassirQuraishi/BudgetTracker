@@ -18,5 +18,4 @@ const ForogotPassword = sequelize.define("forgotPasswordRequests", {
     defaultValue: 1,
   },
 });
-
 module.exports = ForogotPassword;
