@@ -57,6 +57,7 @@ app.use("/premium", premiumRoutes);
 app.use("/password", resetRoutes);
 
 app.use((req, res) => {
+  console.log(req.url);
   res.sendFile(path.join(__dirname, `/public/${req.url}`));
 });
 
