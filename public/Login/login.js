@@ -5,6 +5,7 @@ const forgotLink = document.getElementById("forgot-password");
 
 loginbutton.addEventListener("click", userLogin);
 
+//functions
 async function userLogin(e) {
   e.preventDefault();
   if ((email.value === "") | (password.value === "")) {

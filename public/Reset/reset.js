@@ -1,7 +1,7 @@
 const resetButton = document.getElementById("reset-button");
 
 resetButton.addEventListener("click", resetPassword);
-
+//functions
 async function resetPassword(e) {
   try {
     e.preventDefault();

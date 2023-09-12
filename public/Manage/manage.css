@@ -1,13 +1,11 @@
-/* Reset some default styles */
 body,
 html {
   margin: 0;
   padding: 0;
 }
 
-/* Navbar styles */
 .navbar {
-  background-color: #465361; /* Primary color */
+  background-color: #465361;
   height: 80px;
   display: flex;
   align-items: center;
@@ -21,7 +19,6 @@ html {
   margin: 0;
 }
 
-/* Login form styles */
 .container {
   display: flex;
   justify-content: center;
@@ -29,23 +26,17 @@ html {
   height: calc(100vh - 100px);
   margin-top: 10px;
 }
-/* Clear the float */
+
 .clearfix::after {
   content: "";
   clear: both;
   display: table;
 }
 
-/* Navbar styles (same as previous CSS) */
-
-/* Container styles (same as previous CSS) */
-
-/* First Column styles */
 .column {
   flex: 1;
   margin-right: 10px;
   margin-top: 50px;
-  /* Add some margin between columns */
 }
 .column.column-1 {
   flex: 1;
@@ -106,13 +97,10 @@ ul.list li {
 .nextButton:hover {
   background-color: #0056b3;
 }
-/* ... (previous CSS code remains the same) ... */
-/* ... (previous CSS code remains the same) ... */
 
-/* Second Column styles */
 .column {
   flex: 1;
-  margin-right: 10px; /* Add some margin between columns */
+  margin-right: 10px;
 }
 
 .row {
@@ -120,7 +108,7 @@ ul.list li {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 20px; /* Add some margin between rows */
+  margin-bottom: 20px;
 }
 
 .row .card {
@@ -146,9 +134,3 @@ ul.list li {
 .dash-data {
   margin: 0 35px;
 }
-
-/* ... (continue with any additional styling you need) ... */
-
-/* ... (continue with any additional styling you need) ... */
-
-/* ... (continue with any additional styling you need) ... */

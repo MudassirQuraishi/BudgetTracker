@@ -1,4 +1,3 @@
-// JavaScript to handle modal functionality
 const description = document.getElementById("expense-description");
 const expenseAmount = document.getElementById("expense-amount");
 const category = document.getElementById("category");
@@ -22,11 +21,7 @@ logoutButton.addEventListener("click", logout);
 showLeaderboardButton.addEventListener("click", showModal);
 closeModalButton.addEventListener("click", closeModal);
 incomeButton.addEventListener("click", addIncome);
-// window.addEventListener("click", (event) => {
-//   if (event.target === leaderboardModal) {
-//     leaderboardModal.style.display = "none";
-//   }
-// });
+
 manageExpenseButton.addEventListener("click", openPage);
 async function addIncome(e) {
   e.preventDefault();
@@ -153,10 +148,6 @@ async function createLiElement(userData) {
         { headers: { Authorization: token } }
       );
       userList.removeChild(target);
-      // getExpenses();
-      // if (premiumStatus === "true" && leaderboard.disabled == true) {
-      //   showLeaderboard();
-      // }
     } catch (e) {
       alert(`Error deleting expense : ${e.message}`);
     }

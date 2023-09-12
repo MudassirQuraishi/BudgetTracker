@@ -5,6 +5,7 @@ const signupButton = document.getElementById("signup-button");
 const login = document.getElementById("login-link");
 
 signupButton.addEventListener("click", userSignup);
+
 async function userSignup(e) {
   e.preventDefault();
   if (

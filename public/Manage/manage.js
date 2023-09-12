@@ -13,6 +13,7 @@ rzpBtn.addEventListener("click", razorPay);
 logoutButton.addEventListener("click", logout);
 window.addEventListener("DOMContentLoaded", loadServer);
 
+//functions
 async function razorPay(e) {
   e.preventDefault();
   const token = localStorage.getItem("token");
