@@ -46,7 +46,7 @@ const app = express();
 app.use(function (req, res, next) {
   res.setHeader(
     "Content-Security-Policy-Report-Only",
-    "default-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js https://checkout.razorpay.com/v1/checkout.js; style-src 'self'; frame-src 'self' https://checkout.razorpay.com/v1/checkout.js https://api.razorpay.com/"
+    "default-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self'; script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js https://checkout.razorpay.com/v1/checkout.js; style-src 'self'; frame-src 'self' https://checkout.razorpay.com/v1/checkout.js  https://api.razorpay.com"
   );
   next();
 });
