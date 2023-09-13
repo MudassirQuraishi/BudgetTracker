@@ -72,7 +72,7 @@ async function addExpense(e) {
         { headers: { Authorization: token } }
       );
       if (userList.childElementCount < 5) {
-        console.log(response, "resposne");
+        console.log(response.data.data, "resposne");
         createLiElement(response.data);
       } else {
         description.value = "";
