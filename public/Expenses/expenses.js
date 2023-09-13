@@ -72,6 +72,7 @@ async function addExpense(e) {
         { headers: { Authorization: token } }
       );
       if (userList.childElementCount < 5) {
+        console.log(response, "resposne");
         createLiElement(response.data);
       } else {
         description.value = "";
@@ -202,12 +203,13 @@ async function createLiElement(userData) {
 async function razorPay(e) {
   e.preventDefault();
   const token = localStorage.getItem("token");
-
+  console.log("entered");
   try {
     const response = await axios.get(
       "http://3.106.143.22:3000/purchase/buy-premium",
       { headers: { Authorization: token } }
     );
+    console.log(response);
     await openRazorpay(response.data);
   } catch (error) {
     alert(error.message);
