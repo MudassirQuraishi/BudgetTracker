@@ -23,6 +23,10 @@ const expenseRoutes = require("./routes/expenseRoutes");
 const purchaseRoutes = require("./routes/purchaseRoutes");
 const premiumRoutes = require("./routes/premiumRoutes");
 const resetRoutes = require("./routes/passwordResetRoutes");
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "accesslog.txt"),
+  { flags: "a" }
+);
 
 //table relations
 User.hasMany(Expense);
@@ -42,6 +46,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(compression());
+app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.static(path.join(__dirname, "public")));
 
 //middleware
