@@ -54,10 +54,10 @@ app.use("/expense", expenseRoutes);
 app.use("/purchase", purchaseRoutes);
 app.use("/premium", premiumRoutes);
 app.use("/password", resetRoutes);
-// app.use((req, res) => {
-//   console.log(req.url);
-//   res.sendFile(path.join(__dirname, `/public/${req.url}`));
-// });
+app.use((req, res) => {
+  console.log(req.url);
+  res.sendFile(path.join(__dirname, `/public/${req.url}`));
+});
 
 sequelize.sync().then(() => {
   const port = process.env.PORT;
