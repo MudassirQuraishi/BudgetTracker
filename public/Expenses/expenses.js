@@ -107,6 +107,7 @@ async function sendToUi(data) {
   }
 }
 async function createLiElement(userData) {
+  console.log(userData);
   const li = document.createElement("li");
   const div = document.createElement("div");
   div.className = "button-group";
