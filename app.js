@@ -44,7 +44,7 @@ ReportFiles.belongsTo(User);
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-app.use(helmet());
+// app.use(helmet());
 app.use(compression());
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.static(path.join(__dirname, "public")));
