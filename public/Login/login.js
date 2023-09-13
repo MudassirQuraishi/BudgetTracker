@@ -17,7 +17,7 @@ async function userLogin(e) {
         password: password.value,
       };
       const response = await axios.post(
-        "http://13.211.123.38:3000/user/login",
+        "http://3.106.143.22:3000/user/login",
         loginDetails
       );
       if (response.status === 200) {
