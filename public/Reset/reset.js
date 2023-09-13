@@ -16,7 +16,6 @@ async function resetPassword(e) {
         "http://3.27.191.251:3000/password/forgotPassword",
         resetData
       );
-      console.log(response);
     }
   } catch (error) {
     console.log("Error Resetting Password:", error.message);

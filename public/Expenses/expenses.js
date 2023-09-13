@@ -29,24 +29,22 @@ async function addIncome(e) {
   const income = document.getElementById("income-amount");
   const incomeDes = document.getElementById("income-description");
   if (income.value === "") {
-    console.log("please enter income");
+    alert("please enter income");
   } else {
     const incomeDetails = {
       amount: income.value,
       description: incomeDes.value,
     };
-    console.log(token);
+
     const response = await axios.post(
       "http://3.27.191.251:3000/expense/add-income",
       incomeDetails,
       { headers: { Authorization: token } }
     );
-    console.log(response);
   }
 }
 function openPage(e) {
   e.preventDefault;
-  console.log("button clicked");
   const premiumStatus = localStorage.getItem("isPremium");
   if (premiumStatus === "true") {
     window.location.href = "../Manage/manage.html";
@@ -72,8 +70,7 @@ async function addExpense(e) {
         { headers: { Authorization: token } }
       );
       if (userList.childElementCount < 5) {
-        console.log(response.data.data, "resposne");
-        createLiElement(response.data);
+        createLiElement(response.data.data);
       } else {
         description.value = "";
         expenseAmount.value = "";
@@ -98,7 +95,7 @@ async function getExpenses() {
 }
 async function sendToUi(data) {
   if (data.length < 1) {
-    console.log("No user found");
+    console.log("No Expenses found");
   } else {
     for (let i = 0; i < 5; i++) {
       if (data[i] !== undefined) {
@@ -108,7 +105,6 @@ async function sendToUi(data) {
   }
 }
 async function createLiElement(userData) {
-  console.log(userData);
   const li = document.createElement("li");
   const div = document.createElement("div");
   div.className = "button-group";
@@ -139,9 +135,8 @@ async function createLiElement(userData) {
 
   //event listener to delete an expense when clicked on delete
   delbtn.onclick = async (e) => {
-    console.log(userData);
     const token = localStorage.getItem("token");
-    const premiumStatus = localStorage.getItem("isPremium");
+
     const target = e.target.parentElement.parentElement;
     try {
       const id = userData.id;
@@ -155,9 +150,8 @@ async function createLiElement(userData) {
     }
   };
 
-  // //event listener to edit expense data when clicked on edit
+  //event listener to edit expense data when clicked on edit
   editBtn.onclick = async (e) => {
-    console.log(userData);
     const token = localStorage.getItem("token");
     const target = e.target.parentElement.parentElement;
     try {
@@ -182,7 +176,6 @@ async function createLiElement(userData) {
             description: description.value,
             category: category.value,
           };
-          console.log(updatedData);
           const user = await axios.put(
             `http://3.27.191.251:3000/expense/edit-expense/${id}`,
             updatedData,
@@ -203,13 +196,13 @@ async function createLiElement(userData) {
 async function razorPay(e) {
   e.preventDefault();
   const token = localStorage.getItem("token");
-  console.log("entered");
+
   try {
     const response = await axios.get(
       "http://3.27.191.251:3000/purchase/buy-premium",
       { headers: { Authorization: token } }
     );
-    console.log(response);
+
     await openRazorpay(response.data);
   } catch (error) {
     alert(error.message);
@@ -270,26 +263,30 @@ async function loadServer(e) {
 async function downloadReport(e) {
   e.preventDefault();
   const token = localStorage.getItem("token");
-  try {
-    const response = await axios.get(
-      "http://3.27.191.251:3000/premium/downloadReport",
-      {
-        headers: {
-          Authorization: token,
-        },
+  const premiumStatus = localStorage.getItem("isPremium");
+  if (premiumStatus === "true") {
+    try {
+      const response = await axios.get(
+        "http://3.27.191.251:3000/premium/downloadReport",
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      if (response.status === 200) {
+        const a = document.createElement("a");
+        a.href = response.data.fileURL.Location;
+        a.download = "myExpense.csv";
+        a.click();
+      } else {
+        console.log("error downlodaing expense file");
       }
-    );
-    if (response.status === 200) {
-      console.log(response);
-      const a = document.createElement("a");
-      a.href = response.data.fileURL.Location;
-      a.download = "myExpense.csv";
-      a.click();
-    } else {
-      console.log("error downlodaing expense file");
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
+  } else {
+    alert("Please Buy Premium to download reports");
   }
 }
 function logout(e) {
@@ -326,7 +323,6 @@ async function populateLeaderboard() {
     } else {
       showLeaderboardButton.removeEventListener("click", showModal);
       showLeaderboardButton.addEventListener("click", (e) => {
-        console.log("working");
         alert("Not a premium user");
       });
     }

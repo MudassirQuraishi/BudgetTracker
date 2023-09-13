@@ -111,7 +111,6 @@ async function getPagination(page) {
       `http://3.27.191.251:3000/expense/paginatedExpense?count=${count}&page=${currentPage}`,
       { headers: { Authorization: token } }
     );
-    console.log(response.data);
     await showPagination(response.data.data);
     await sendToUi(response.data.data.pageData);
   } catch (error) {
@@ -157,7 +156,6 @@ function createLiElement(userData) {
 
   //event listener to delete an expense when clicked on delete
   delbtn.onclick = async (e) => {
-    console.log(userData);
     const token = localStorage.getItem("token");
     const premiumStatus = localStorage.getItem("isPremium");
     const target = e.target.parentElement.parentElement;
@@ -168,10 +166,6 @@ function createLiElement(userData) {
         { headers: { Authorization: token } }
       );
       userList.removeChild(target);
-      // getExpenses();
-      // if (premiumStatus === "true" && leaderboard.disabled == true) {
-      //   showLeaderboard();
-      // }
     } catch (e) {
       alert(`Error deleting expense : ${e.message}`);
     }
@@ -179,7 +173,6 @@ function createLiElement(userData) {
 
   // //event listener to edit expense data when clicked on edit
   editBtn.onclick = async (e) => {
-    console.log(userData);
     const token = localStorage.getItem("token");
     const target = e.target.parentElement.parentElement;
     try {
@@ -203,7 +196,6 @@ function createLiElement(userData) {
             description: description.value,
             category: category.value,
           };
-          console.log(updatedData);
           const user = await axios.put(
             `http://3.27.191.251:3000/expense/edit-expense/${id}`,
             updatedData,
@@ -212,9 +204,6 @@ function createLiElement(userData) {
           const premiumStatus = localStorage.getItem("isPremium");
           userList.removeChild(target);
           createLiElement(user.data);
-          // if (premiumStatus === "true" && leaderboard.disabled == true) {
-          //   showLeaderboard();
-          // }
         } catch (error) {
           alert(`Error updating expense : ${error.message}`);
         }
@@ -234,14 +223,6 @@ async function showPagination(data) {
     hasPreviousPage,
     lastPage,
   } = data;
-  console.log(
-    currentpage,
-    nextPage,
-    previousPage,
-    hasNextPage,
-    hasPreviousPage,
-    lastPage
-  );
   pagination.innerHTML = "";
 
   if (hasPreviousPage) {
@@ -282,7 +263,6 @@ async function showPagination(data) {
 async function getPreviousDownloads(e) {
   const token = localStorage.getItem("token");
   try {
-    console.log(token);
     const response = await axios.get(
       "http://3.27.191.251:3000/premium/get-previous-reports",
       {
@@ -315,7 +295,6 @@ async function updateDashboard() {
       "http://3.27.191.251:3000/premium/dashboard",
       { headers: { Authorization: token } }
     );
-    console.log(response.data.data);
     const expenseData = {
       income: response.data.data.income,
       expense: response.data.data.totalExpense,
