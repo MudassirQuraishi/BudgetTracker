@@ -10,6 +10,7 @@ const sequelize = require("../utilities/database");
 
 //to buy premium membership
 exports.buyPremium = async (req, res) => {
+  console.log("enteed");
   const key_id = process.env.RAZORPAY_KEY_ID;
   const key_secret = process.env.RAZORPAY_KEY_SECRET;
   try {
