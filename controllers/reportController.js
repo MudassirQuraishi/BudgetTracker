@@ -60,7 +60,7 @@ exports.downloadReport = async (req, res) => {
 
 exports.showReports = async (req, res) => {
   try {
-    await Reports.findAll({
+    const response = await Reports.findAll({
       where: { UserId: req.user.id },
       attributes: ["fileUrl", "createdAt"],
     });
