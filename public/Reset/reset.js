@@ -13,7 +13,7 @@ async function resetPassword(e) {
         email: email.value,
       };
       const response = await axios.post(
-        "http://3.27.191.251:3000/password/forgotPassword",
+        "http://13.239.25.153:3000/password/forgotPassword",
         resetData
       );
     }

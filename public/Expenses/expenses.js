@@ -37,7 +37,7 @@ async function addIncome(e) {
     };
 
     const response = await axios.post(
-      "http://3.27.191.251:3000/expense/add-income",
+      "http://13.239.25.153:3000/expense/add-income",
       incomeDetails,
       { headers: { Authorization: token } }
     );
@@ -65,7 +65,7 @@ async function addExpense(e) {
         category: category.value,
       };
       const response = await axios.post(
-        "http://3.27.191.251:3000/expense/add-expense",
+        "http://13.239.25.153:3000/expense/add-expense",
         expenseDetails,
         { headers: { Authorization: token } }
       );
@@ -85,7 +85,7 @@ async function getExpenses() {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.get(
-      "http://3.27.191.251:3000/expense/get-expense",
+      "http://13.239.25.153:3000/expense/get-expense",
       { headers: { Authorization: token } }
     );
     sendToUi(response.data);
@@ -141,7 +141,7 @@ async function createLiElement(userData) {
     try {
       const id = userData.id;
       const user = await axios.delete(
-        `http://3.27.191.251:3000/expense/delete-expense/${id}`,
+        `http://13.239.25.153:3000/expense/delete-expense/${id}`,
         { headers: { Authorization: token } }
       );
       userList.removeChild(target);
@@ -177,7 +177,7 @@ async function createLiElement(userData) {
             category: category.value,
           };
           const user = await axios.put(
-            `http://3.27.191.251:3000/expense/edit-expense/${id}`,
+            `http://13.239.25.153:3000/expense/edit-expense/${id}`,
             updatedData,
             { headers: { Authorization: token } }
           );
@@ -199,7 +199,7 @@ async function razorPay(e) {
 
   try {
     const response = await axios.get(
-      "http://3.27.191.251:3000/purchase/buy-premium",
+      "http://13.239.25.153:3000/purchase/buy-premium",
       { headers: { Authorization: token } }
     );
 
@@ -218,7 +218,7 @@ const openRazorpay = async (data) => {
       order_id: data.order.id,
       handler: async function (response) {
         const update = await axios.post(
-          "http://3.27.191.251:3000/purchase/updateMembership",
+          "http://13.239.25.153:3000/purchase/updateMembership",
           {
             order_id: data.order.id,
             payment_id: response.razorpay_payment_id,
@@ -239,7 +239,7 @@ const openRazorpay = async (data) => {
 
     rzp.on("payment.failed", async (failedData) => {
       const data = await axios.post(
-        "http://3.27.191.251:3000/purchase/failed",
+        "http://13.239.25.153:3000/purchase/failed",
         failedData,
         { headers: { Authorization: token } }
       );
@@ -267,7 +267,7 @@ async function downloadReport(e) {
   if (premiumStatus === "true") {
     try {
       const response = await axios.get(
-        "http://3.27.191.251:3000/premium/downloadReport",
+        "http://13.239.25.153:3000/premium/downloadReport",
         {
           headers: {
             Authorization: token,
@@ -307,7 +307,7 @@ async function populateLeaderboard() {
 
   try {
     const response = await axios.get(
-      "http://3.27.191.251:3000/premium/showLeaderboard",
+      "http://13.239.25.153:3000/premium/showLeaderboard",
       {
         headers: { Authorization: token },
       }

@@ -22,7 +22,7 @@ async function userSignup(e) {
         password: userPassword.value,
       };
       const response = await axios.post(
-        "http://3.27.191.251:3000/user/signup",
+        "http://13.239.25.153:3000/user/signup",
         signupDetails
       );
       if (response.status === 200) {
