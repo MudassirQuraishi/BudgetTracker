@@ -107,5 +107,5 @@ exports.updatePassword = async (req, res) => {
       });
     });
   }
-  res.status(200).json({ success: true });
+  res.status(200).send("../public/Login/login.html");
 };
