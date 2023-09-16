@@ -20,7 +20,7 @@ async function razorPay(e) {
 
   try {
     const response = await axios.get(
-      "http://13.239.25.153:3000/purchase/buy-premium",
+      "http://54.66.209.185:3000/purchase/buy-premium",
       { headers: { Authorization: token } }
     );
     await openRazorpay(response.data);
@@ -38,7 +38,7 @@ const openRazorpay = async (data) => {
       order_id: data.order.id,
       handler: async function (response) {
         const update = await axios.post(
-          "http://13.239.25.153:3000/purchase/updateMembership",
+          "http://54.66.209.185:3000/purchase/updateMembership",
           {
             order_id: data.order.id,
             payment_id: response.razorpay_payment_id,
@@ -59,7 +59,7 @@ const openRazorpay = async (data) => {
 
     rzp.on("payment.failed", async (failedData) => {
       const data = await axios.post(
-        "http://13.239.25.153:3000/purchase/failed",
+        "http://54.66.209.185:3000/purchase/failed",
         failedData,
         { headers: { Authorization: token } }
       );
@@ -108,7 +108,7 @@ async function getPagination(page) {
     const token = localStorage.getItem("token");
     userList.innerHTML = "";
     const response = await axios.get(
-      `http://13.239.25.153:3000/expense/paginatedExpense?count=${count}&page=${currentPage}`,
+      `http://54.66.209.185:3000/expense/paginatedExpense?count=${count}&page=${currentPage}`,
       { headers: { Authorization: token } }
     );
     await showPagination(response.data.data);
@@ -162,7 +162,7 @@ function createLiElement(userData) {
     try {
       const id = userData.id;
       const user = await axios.delete(
-        `http://13.239.25.153:3000/expense/delete-expense/${id}`,
+        `http://54.66.209.185:3000/expense/delete-expense/${id}`,
         { headers: { Authorization: token } }
       );
       userList.removeChild(target);
@@ -197,7 +197,7 @@ function createLiElement(userData) {
             category: category.value,
           };
           const user = await axios.put(
-            `http://13.239.25.153:3000/expense/edit-expense/${id}`,
+            `http://54.66.209.185:3000/expense/edit-expense/${id}`,
             updatedData,
             { headers: { Authorization: token } }
           );
@@ -264,7 +264,7 @@ async function getPreviousDownloads(e) {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      "http://13.239.25.153:3000/premium/get-previous-reports",
+      "http://54.66.209.185:3000/premium/get-previous-reports",
       {
         headers: { Authorization: token },
       }
@@ -292,7 +292,7 @@ async function updateDashboard() {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      "http://13.239.25.153:3000/premium/dashboard",
+      "http://54.66.209.185:3000/premium/dashboard",
       {
         headers: { Authorization: token },
       }
