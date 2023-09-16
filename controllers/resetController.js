@@ -85,7 +85,7 @@ exports.resetPassword = async (req, res) => {
     });
   }
 };
-
+//update password
 exports.updatePassword = async (req, res) => {
   const { newPassword } = req.query;
   const { id } = req.params;
