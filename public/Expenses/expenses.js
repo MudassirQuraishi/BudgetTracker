@@ -41,6 +41,8 @@ async function addIncome(e) {
       incomeDetails,
       { headers: { Authorization: token } }
     );
+    income.value = "";
+    incomeDes.value = "";
   }
 }
 function openPage(e) {
