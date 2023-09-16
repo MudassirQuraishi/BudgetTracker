@@ -107,5 +107,17 @@ exports.updatePassword = async (req, res) => {
       });
     });
   }
-  res.status(200).send("../public/Login/login.html");
+  res.status(200).send(`<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Reset Password</title>
+    </head>
+    <body>
+      <h4>Password Reset Succesfully</h4>
+      <a href="./public/Login/login.html">Back to Login</a>
+    </body>
+  </html>
+  `);
 };
