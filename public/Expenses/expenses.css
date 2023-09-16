@@ -89,7 +89,7 @@ html {
 .container {
   display: flex;
   justify-content: space-between;
-  height: calc(100vh - 100px);
+  height: 600px;
   padding: 20px;
 }
 
