@@ -95,6 +95,7 @@ exports.resetPassword = async (req, res) => {
             if(response.status === 200){
               window.location.href = '../..//Login/login.html'
             }
+            
           });
         </script>
       </body>

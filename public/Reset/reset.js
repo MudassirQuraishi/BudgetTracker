@@ -16,6 +16,9 @@ async function resetPassword(e) {
         "http://54.66.209.185:3000/password/forgotPassword",
         resetData
       );
+      if (response.status === 200) {
+        alert("Please Check you mail");
+      }
     }
   } catch (error) {
     console.log("Error Resetting Password:", error.message);
