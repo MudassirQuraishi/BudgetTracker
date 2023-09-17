@@ -2,6 +2,7 @@
 const bcrypt = require("bcrypt");
 var sib = require("sib-api-v3-sdk");
 const uuid = require("uuid");
+const axios = require("axios");
 
 //importing models
 const User = require("../models/userModel");
@@ -65,19 +66,40 @@ exports.resetPassword = async (req, res) => {
   const user = await ForogotPassword.findOne({ where: { uuid: id } });
   if (user.dataValues.isActive) {
     await ForogotPassword.update({ isActive: false }, { where: { uuid: id } });
-    res.status(200).send(`<html>
-    <script>
-    function formsubmitted(e){
-      e.preventDefault();
-      console.log('called')
-      }
-      </script>
-      <form action="/password/update-password/${id}" method="get">
-          <label for="newPassword">Enter New password</label>
-          <input name="newPassword" type="password" required></input>
-          <button>reset password</button>
-      </form>
-  </html>`);
+    res.status(200).send(`<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
+        <title>Reset Password</title>
+      </head>
+      <body>
+        <form action="">
+          <label for="newPassword">New Password :</label>
+          <input type="text" id="password" name="newPassword" />
+          <button type="submit" id="reset-button">Reset Password</button>
+        </form>
+        <script>
+          const resetButton = document.getElementById("reset-button");
+          const newPassword = document.getElementById("password");
+          resetButton.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const details = {
+              newPassword: newPassword.value,
+            };
+            const response = await axios.post(
+              "http://54.66.209.185:3000/password/update-password/${id}",
+              details
+            );
+            if(response.status === 200){
+              window.location.href = '../..//Login/login.html'
+            }
+          });
+        </script>
+      </body>
+    </html>
+    `);
     return res.end();
   } else {
     res.json({
@@ -87,7 +109,7 @@ exports.resetPassword = async (req, res) => {
 };
 //update password
 exports.updatePassword = async (req, res) => {
-  const { newPassword } = req.query;
+  const { newPassword } = req.body;
   const { id } = req.params;
   const passwordRequest = await ForogotPassword.findOne({
     where: { uuid: id },
@@ -107,17 +129,7 @@ exports.updatePassword = async (req, res) => {
       });
     });
   }
-  res.status(200).send(`<!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Reset Password</title>
-    </head>
-    <body>
-      <h4>Password Reset Succesfully</h4>
-      <a href="./public/Login/login.html">Back to Login</a>
-    </body>
-  </html>
-  `);
+  res
+    .status(200)
+    .json({ success: true, message: "Password updated successfully" });
 };
