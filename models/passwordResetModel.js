@@ -1,14 +1,17 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
+// Define the reset schema
 const resetSchema = new Schema({
 	uuid: {
 		type: String,
 		required: true,
 	},
-	isacative: {
+	isActive: {
 		type: Boolean,
 		default: true,
 	},
 });
 
-module.exports = mongoose.model("reset", resetSchema);
+// Create and export the Reset model using the reset schema
+module.exports = mongoose.model("Reset", resetSchema);

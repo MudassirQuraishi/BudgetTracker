@@ -3,9 +3,11 @@ const Order = require("../models/ordersModel");
 const User = require("../models/userModel");
 const mongoose = require("mongoose");
 
-// Import Mongoose and start a session
-
-// To buy premium membership
+/**
+ * Middleware to initiate the purchase of a premium membership.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.buyPremium = async (req, res) => {
 	const session = await mongoose.startSession();
 	session.startTransaction();
@@ -39,15 +41,19 @@ exports.buyPremium = async (req, res) => {
 
 		res.status(200).json({ order, key_id: rzp.key_id });
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		await session.abortTransaction();
 		session.endSession();
 
-		res.status(403).json({ message: "Something went wrong", error: error });
+		res.status(500).json({ message: "Something went wrong", error: error });
 	}
 };
 
-// To update membership and handle successful payment
+/**
+ * Middleware to update the user's membership after a successful payment.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.updateMembership = async (req, res) => {
 	const session = await mongoose.startSession();
 	session.startTransaction();
@@ -110,7 +116,11 @@ exports.updateMembership = async (req, res) => {
 	}
 };
 
-// To handle failed purchase and initiate rollback
+/**
+ * Middleware to handle a failed purchase and initiate a rollback.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.failedPurchase = async (req, res) => {
 	const session = await mongoose.startSession();
 	session.startTransaction();

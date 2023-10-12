@@ -1,54 +1,38 @@
-//importing models
+// Importing models and libraries
 const Expense = require("../models/expenseModel");
 const User = require("../models/userModel");
-
-//importing sequelize
 const mongoose = require("mongoose");
 
-//middleware functions
-
-//to save expense
-
+/**
+ * Middleware to save an expense to the database.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.saveDataToDatabase = async (req, res) => {
-	//const session = await mongoose.startSession();
-	//session.startTransaction();
-
 	try {
 		const { _id } = req.user;
-		console.log(_id);
 		const { description, amount, category } = req.body;
-		console.log(typeof description);
-		console.log(typeof amount);
-		console.log(typeof category);
+
 		// Create the expense document using Expense.create
-		const savedExpense = await Expense.create(
-			[
-				{
-					description: description,
-					price: amount,
-					category: category,
-					user: _id,
-				},
-			],
-			//	{ session },
-		);
-
-		// Update the user's totalExpense field
-		//await User.updateOne({ _id: _id }, { $inc: { totalExpense: amount } }, { session });
-
-		//await session.commitTransaction();
-		//session.endSession();
+		const savedExpense = await Expense.create({
+			description: description,
+			price: amount,
+			category: category,
+			user: _id,
+		});
 
 		res.status(201).json({ success: true, message: "Successfully added Expense", data: savedExpense });
 	} catch (error) {
-		console.log(error);
-		//await session.abortTransaction();
-		//	session.endSession();
-
-		res.status(500).json({ error: "Error Adding Expense To The Database" });
+		console.error("Error in saving expense:", error);
+		res.status(500).json({ success: false, message: "Error Adding Expense To The Database" });
 	}
 };
 
+/**
+ * Middleware to delete an expense from the database.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.deleteFromDatabase = async (req, res) => {
 	const session = await mongoose.startSession();
 	session.startTransaction();
@@ -80,11 +64,16 @@ exports.deleteFromDatabase = async (req, res) => {
 	} catch (error) {
 		await session.abortTransaction();
 		session.endSession();
-		res.status(500).json({ error: "Error Deleting Data From the Database" });
+		console.error("Error in deleting expense:", error);
+		res.status(500).json({ success: false, message: "Error Deleting Data From the Database" });
 	}
 };
 
-// //to edit expense
+/**
+ * Middleware to edit an expense in the database.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.editDataInDatabase = async (req, res) => {
 	const session = await mongoose.startSession();
 	session.startTransaction();
@@ -115,11 +104,16 @@ exports.editDataInDatabase = async (req, res) => {
 	} catch (error) {
 		await session.abortTransaction();
 		session.endSession();
-		res.status(500).json({ error: "Error Editing Data from the Database" });
+		console.error("Error in editing expense:", error);
+		res.status(500).json({ success: false, message: "Error Editing Data from the Database" });
 	}
 };
 
-//to get all the data when page refresh happens
+/**
+ * Middleware to get all expenses from the database.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.getAllDataFromDatabase = async (req, res) => {
 	try {
 		// Find all expenses associated with the current user
@@ -129,11 +123,17 @@ exports.getAllDataFromDatabase = async (req, res) => {
 		const data = dbData.map((expense) => expense.toObject());
 
 		res.status(200).json(data);
-	} catch (err) {
-		res.status(500).json({ error: "Error retrieving all data from the database" });
+	} catch (error) {
+		console.error("Error in retrieving all expenses:", error);
+		res.status(500).json({ success: false, message: "Error retrieving all data from the database" });
 	}
 };
 
+/**
+ * Middleware to get paginated expenses from the database.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.getPaginatedData = async (req, res) => {
 	const currentPage = parseInt(req.query.page) || 1;
 	const perPage = parseInt(req.query.count) || 3;
@@ -157,7 +157,6 @@ exports.getPaginatedData = async (req, res) => {
 			totalExpenses,
 			totalPages: Math.ceil(totalExpenses / perPage),
 		};
-		console.log(responseData);
 
 		res.status(200).json({
 			success: true,
@@ -165,11 +164,16 @@ exports.getPaginatedData = async (req, res) => {
 			data: responseData,
 		});
 	} catch (error) {
-		console.log(error);
+		console.error("Error in retrieving paginated data:", error);
 		res.status(500).json({ success: false, error: "Error retrieving paginated data" });
 	}
 };
 
+/**
+ * Middleware to add income to the user's profile.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.addIncome = async (req, res) => {
 	try {
 		const { _id } = req.user;
@@ -180,6 +184,7 @@ exports.addIncome = async (req, res) => {
 
 		res.status(200).json({ success: true, message: "Income added successfully", response });
 	} catch (error) {
+		console.error("Error in adding income:", error);
 		res.status(500).json({ success: false, message: "Error adding income" });
 	}
 };

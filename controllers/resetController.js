@@ -13,7 +13,11 @@ apiKey.apiKey = process.env.SENDINBLUE_API_KEY;
 
 const transacEmailApi = new sib.TransactionalEmailsApi();
 
-// Function to send a password reset email using SendinBlue
+/**
+ * Function to send a password reset email using SendinBlue.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.forgotPassword = async (req, res) => {
 	const { email } = req.body;
 	try {
@@ -39,16 +43,19 @@ exports.forgotPassword = async (req, res) => {
     http://your-app-url/reset-password/${uuidToken}`;
 
 		const sendEmailResponse = await transacEmailApi.sendTransacEmail({ sendSmtpEmail });
-		console.log(sendEmailResponse);
 
 		res.status(200).json({ success: true, message: "Email sent successfully" });
 	} catch (error) {
-		console.log(error);
+		console.error("Error in sending password reset email:", error);
 		res.status(500).json({ success: false, message: "Email cannot be sent" });
 	}
 };
 
-// Function to render a reset password form
+/**
+ * Function to render a reset password form.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.resetPassword = async (req, res) => {
 	const id = req.params.id;
 	const resetRequest = await ForgotPassword.findOne({ uuid: id });
@@ -84,7 +91,7 @@ exports.resetPassword = async (req, res) => {
                   }
                 })
                 .catch((error) => {
-                  console.error(error);
+                  console.error("Error resetting password:", error);
                 });
             });
           </script>
@@ -98,7 +105,11 @@ exports.resetPassword = async (req, res) => {
 	}
 };
 
-// Function to update the password
+/**
+ * Function to update the password.
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ */
 exports.updatePassword = async (req, res) => {
 	const { newPassword } = req.body;
 	const { id } = req.params;
@@ -109,7 +120,7 @@ exports.updatePassword = async (req, res) => {
 		// Hash the new password and update the user's password
 		bcrypt.hash(newPassword, 10, async (err, hash) => {
 			if (err) {
-				console.log(err);
+				console.error("Error hashing password:", err);
 				res.status(500).json({
 					success: false,
 					message: "Error updating password",

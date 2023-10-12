@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// Define the user schema
 const userSchema = new Schema(
 	{
 		userName: {
@@ -16,7 +17,6 @@ const userSchema = new Schema(
 			type: String,
 			required: true,
 		},
-
 		isPremium: {
 			type: Boolean,
 			default: false,
@@ -31,8 +31,9 @@ const userSchema = new Schema(
 		},
 	},
 	{
-		timestamps: true,
+		timestamps: true, // Automatically add 'createdAt' and 'updatedAt' fields
 	},
 );
 
+// Create and export the User model using the user schema
 module.exports = mongoose.model("User", userSchema);
