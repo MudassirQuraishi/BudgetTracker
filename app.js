@@ -2,14 +2,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const helmet = require("helmet");
-const compression = require("compression");
-const morgan = require("morgan");
 require("dotenv").config();
-const fs = require("fs");
+
 const path = require("path");
 
-const sequelize = require("./utilities/database");
+const mongoose = require("mongoose");
 //importing models
 const User = require("./models/userModel");
 const Expense = require("./models/expenseModel");
@@ -24,39 +21,31 @@ const purchaseRoutes = require("./routes/purchaseRoutes");
 const premiumRoutes = require("./routes/premiumRoutes");
 const resetRoutes = require("./routes/passwordResetRoutes");
 
-//table relations
-User.hasMany(Expense);
-Expense.belongsTo(User);
-
-User.hasMany(Order);
-Order.belongsTo(User);
-
-User.hasMany(ForogotPassword);
-ForogotPassword.belongsTo(User);
-
-User.hasMany(ReportFiles);
-ReportFiles.belongsTo(User);
-
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(compression());
 app.use(express.static(path.join(__dirname, "public")));
 
-//middleware
+// //middleware
 app.use("/user", loginRoutes);
 app.use("/expense", expenseRoutes);
 app.use("/purchase", purchaseRoutes);
 app.use("/premium", premiumRoutes);
 app.use("/password", resetRoutes);
 app.use((req, res) => {
-  console.log(req.url);
-  res.sendFile(path.join(__dirname, `/public/${req.url}`));
+	console.log(req.url);
+	res.sendFile(path.join(__dirname, `/public/${req.url}`));
 });
 
-sequelize.sync().then(() => {
-  const port = process.env.PORT;
-  console.log(`Server started at ${port}`);
-  app.listen(port);
-});
+mongoose
+	.connect(process.env.DB_URL)
+	.then(() => {
+		console.log("DB CONNECTION SUCCESSFUL");
+		console.log("STARTING SERVER.....");
+		app.listen(process.env.PORT);
+		console.log("SERVER STARTED");
+	})
+	.catch((error) => {
+		console.log(error.message);
+	});

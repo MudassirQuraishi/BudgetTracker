@@ -1,136 +1,136 @@
-//importing libraries
 const bcrypt = require("bcrypt");
-var sib = require("sib-api-v3-sdk");
+const sib = require("sib-api-v3-sdk");
 const uuid = require("uuid");
 const axios = require("axios");
 
-//importing models
 const User = require("../models/userModel");
-const ForogotPassword = require("../models/passwordResetModel");
+const ForgotPassword = require("../models/passwordResetModel");
 
+// Initialize the SendinBlue API client
+const defaultClient = sib.ApiClient.instance;
+const apiKey = defaultClient.authentications["api-key"];
+apiKey.apiKey = process.env.SENDINBLUE_API_KEY;
+
+const transacEmailApi = new sib.TransactionalEmailsApi();
+
+// Function to send a password reset email using SendinBlue
 exports.forgotPassword = async (req, res) => {
-  const { email } = req.body;
-  const check = await User.findOne({ where: { email: email } });
+	const { email } = req.body;
+	try {
+		const uuidToken = uuid.v4(); // Generate a unique token
 
-  if (check) {
-    const id = uuid.v4();
-    const createRequest = await ForogotPassword.create({
-      uuid: id,
-      isActive: true,
-      UserId: check.dataValues.id,
-    });
+		// Save the reset request in the database
+		const resetRequest = new ForgotPassword({ uuid: uuidToken, isActive: true });
+		await resetRequest.save();
 
-    try {
-      const defaultClient = sib.ApiClient.instance;
+		// Compose and send the email using SendinBlue
+		const sender = new sib.SendSmtpEmailSender();
+		sender.email = "hr@recur.com";
+		sender.name = "HR";
 
-      const apiKey = defaultClient.authentications["api-key"];
-      apiKey.apiKey = process.env.BREVO_API_KEY;
+		const to = [new sib.SendSmtpEmailTo()];
+		to[0].email = email;
 
-      const apiInstance = new sib.TransactionalEmailsApi();
+		const sendSmtpEmail = new sib.SendSmtpEmail();
+		sendSmtpEmail.sender = sender;
+		sendSmtpEmail.to = to;
+		sendSmtpEmail.subject = "Password Reset Request";
+		sendSmtpEmail.textContent = `Click the following link to reset your password: 
+    http://your-app-url/reset-password/${uuidToken}`;
 
-      const sender = {
-        email: "mudassir.quraishi14@outlook.com",
-        name: "Expense Tracker",
-      };
-      const recievers = [
-        {
-          email: req.body.email,
-        },
-      ];
-      const data = await apiInstance.sendTransacEmail({
-        sender,
-        to: recievers,
-        subject: "Reset Password",
-        textContent: `http://54.66.209.185:3000/password/reset-password/{{params.uuid}}`,
-        htmlContent: `<h1>Expense Tracker App</h1>
-        <p>Hi there! Reset the Expense Tracker APP password for your account with email</p>
-        <a href="http://54.66.209.185:3000/password/reset-password/{{params.uuid}}">Reset Password</a>`,
-        params: {
-          uuid: id,
-        },
-      });
-      res
-        .status(200)
-        .json({ success: true, message: "Email sent successfully" });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ success: false, message: "Email cannot be sent" });
-    }
-  } else {
-    res.status(500).json({ success: false, message: "Email not found" });
-  }
+		const sendEmailResponse = await transacEmailApi.sendTransacEmail({ sendSmtpEmail });
+		console.log(sendEmailResponse);
+
+		res.status(200).json({ success: true, message: "Email sent successfully" });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ success: false, message: "Email cannot be sent" });
+	}
 };
 
+// Function to render a reset password form
 exports.resetPassword = async (req, res) => {
-  const id = req.params.id;
-  const user = await ForogotPassword.findOne({ where: { uuid: id } });
-  if (user.dataValues.isActive) {
-    await ForogotPassword.update({ isActive: false }, { where: { uuid: id } });
-    res.status(200).send(`<!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
-        <title>Reset Password</title>
-      </head>
-      <body>
-        <form action="">
-          <label for="newPassword">New Password :</label>
-          <input type="text" id="password" name="newPassword" />
-          <button type="submit" id="reset-button">Reset Password</button>
-        </form>
-        <script>
-          const resetButton = document.getElementById("reset-button");
-          const newPassword = document.getElementById("password");
-          resetButton.addEventListener("click", async (e) => {
-            e.preventDefault();
-            const details = {
-              newPassword: newPassword.value,
-            };
-            const response = await axios.post(
-              "http://54.66.209.185:3000/password/update-password/${id}",
-              details
-            );
-            if(response.status === 200){
-              window.location.href = '../..//Login/login.html'
-            }
-            
-          });
-        </script>
-      </body>
-    </html>
+	const id = req.params.id;
+	const resetRequest = await ForgotPassword.findOne({ uuid: id });
+
+	if (resetRequest.isActive) {
+		res.send(`
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+          <title>Reset Password</title>
+        </head>
+        <body>
+          <form action="">
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="password" name="newPassword">
+            <button type="submit" id="reset-button">Reset Password</button>
+          </form>
+          <script>
+            const resetButton = document.getElementById("reset-button");
+            const newPassword = document.getElementById("password");
+            const id = "${id}";
+            resetButton.addEventListener("click", async (e) => {
+              e.preventDefault();
+              const newPasswordValue = newPassword.value;
+              if (!newPasswordValue) return;
+              axios.post("/reset-password/" + id, { newPassword: newPasswordValue })
+                .then((response) => {
+                  if (response.status === 200) {
+                    window.location.href = "../../Login/login.html";
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                });
+            });
+          </script>
+        </body>
+      </html>
     `);
-    return res.end();
-  } else {
-    res.json({
-      message: "Ivalid Link",
-    });
-  }
+	} else {
+		res.json({
+			message: "Invalid Link",
+		});
+	}
 };
-//update password
+
+// Function to update the password
 exports.updatePassword = async (req, res) => {
-  const { newPassword } = req.body;
-  const { id } = req.params;
-  const passwordRequest = await ForogotPassword.findOne({
-    where: { uuid: id },
-  });
-  const requestedUser = await User.findOne({
-    where: { id: passwordRequest.dataValues.UserId },
-  });
-  if (requestedUser) {
-    const saltRounds = 10;
-    bcrypt.hash(newPassword, saltRounds, async (err, hash) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      const updatedPassword = requestedUser.update({
-        password: hash,
-      });
-    });
-  }
-  res
-    .status(200)
-    .json({ success: true, message: "Password updated successfully" });
+	const { newPassword } = req.body;
+	const { id } = req.params;
+
+	const resetRequest = await ForgotPassword.findOne({ uuid: id });
+
+	if (resetRequest.isActive) {
+		// Hash the new password and update the user's password
+		bcrypt.hash(newPassword, 10, async (err, hash) => {
+			if (err) {
+				console.log(err);
+				res.status(500).json({
+					success: false,
+					message: "Error updating password",
+				});
+			} else {
+				// Find the user and update the password
+				const user = await User.findOne({ _id: resetRequest.UserId });
+				user.password = hash;
+				await user.save();
+
+				// Deactivate the reset request
+				resetRequest.isActive = false;
+				await resetRequest.save();
+
+				res.status(200).json({
+					success: true,
+					message: "Password updated successfully",
+				});
+			}
+		});
+	} else {
+		res.status(404).json({ message: "Invalid Link" });
+	}
 };

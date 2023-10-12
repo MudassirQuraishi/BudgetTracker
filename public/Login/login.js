@@ -7,29 +7,26 @@ loginbutton.addEventListener("click", userLogin);
 
 //functions
 async function userLogin(e) {
-  e.preventDefault();
-  if ((email.value === "") | (password.value === "")) {
-    alert("Please enter your credentials");
-  } else {
-    try {
-      const loginDetails = {
-        email: email.value,
-        password: password.value,
-      };
-      const response = await axios.post(
-        "http://54.66.209.185:3000/user/login",
-        loginDetails
-      );
-      if (response.status === 200) {
-        localStorage.setItem("token", response.data.encryptedId);
-        localStorage.setItem("isPremium", response.data.isPremium);
-        alert("logged in successfully");
-        window.location.href = "../Expenses/expenses.html";
-      } else if (response.status === 401) {
-        alert("Incorrect username or password");
-      }
-    } catch (error) {
-      console.log("User not found");
-    }
-  }
+	e.preventDefault();
+	if ((email.value === "") | (password.value === "")) {
+		alert("Please enter your credentials");
+	} else {
+		try {
+			const loginDetails = {
+				email: email.value,
+				password: password.value,
+			};
+			const response = await axios.post("http://localhost:4000/user/login", loginDetails);
+			if (response.status === 200) {
+				localStorage.setItem("token", response.data.encryptedId);
+				localStorage.setItem("isPremium", response.data.isPremium);
+				alert("logged in successfully");
+				window.location.href = "../Expenses/expenses.html";
+			} else if (response.status === 401) {
+				alert("Incorrect username or password");
+			}
+		} catch (error) {
+			console.log("User not found");
+		}
+	}
 }

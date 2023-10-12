@@ -1,15 +1,10 @@
-const Sequelize = require("sequelize");
-const sequelize = require("../utilities/database");
-
-const Reports = sequelize.define("reports", {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
-  },
-  fileUrl: {
-    type: Sequelize.STRING,
-  },
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const reportSchema = new Schema({
+	fileUrl: {
+		type: String,
+		required: true,
+	},
 });
-module.exports = Reports;
+
+module.exports = mongoose.model("Report", reportSchema);

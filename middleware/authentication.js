@@ -8,15 +8,15 @@ const User = require("../models/userModel");
 
 //to authenticate a user
 exports.authenticateToken = async (req, res, next) => {
-  const token = req.headers.authorization;
-  try {
-    const secretKey = process.env.JWT_SECRET_KEY;
-    const decodedId = jwt.verify(token, secretKey);
-    const loggedInUserData = await User.findByPk(decodedId);
-    const user = loggedInUserData.dataValues;
-    req.user = user;
-    next();
-  } catch (error) {
-    res.status(500).json({ error: "Error in the Authentication" });
-  }
+	const token = req.headers.authorization;
+	try {
+		const secretKey = process.env.JWT_SECRET_KEY;
+		const decodedId = jwt.verify(token, secretKey);
+		const loggedInUserData = await User.findOne({ _id: decodedId.userId });
+		const user = loggedInUserData;
+		req.user = user;
+		next();
+	} catch (error) {
+		res.status(500).json({ error: "Error in the Authentication" });
+	}
 };

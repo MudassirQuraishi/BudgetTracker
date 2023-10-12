@@ -2,74 +2,57 @@ const Expense = require("../models/expenseModel");
 const Reports = require("../models/fileReportsModel");
 
 const AWS = require("aws-sdk");
-const sequelize = require("../utilities/database");
+const mongoose = require("mongoose");
+
+const s3 = new AWS.S3({
+	accessKeyId: process.env.AWS_ACCESS_KEY,
+	secretAccessKey: process.env.AWS_SECRET_KEY,
+});
 
 function uploadToS3(data, name) {
-  const BUCKET_NAME = process.env.AWS_EXPENSE_FILE_BUCKET;
-  const IAM_USER_KEY = process.env.AWS_ACCESS_KEY;
-  const IAM_USER_SECRET = process.env.AWS_SECRET_KEY;
-  const ACL_ACCESS = process.env.AWS_ACCESS_STATUS;
-  let s3Bucket = new AWS.S3({
-    accessKeyId: IAM_USER_KEY,
-    secretAccessKey: IAM_USER_SECRET,
-  });
-  const params = {
-    Bucket: BUCKET_NAME,
-    Key: name,
-    Body: data,
-    ACL: ACL_ACCESS,
-  };
-  return new Promise((res, rej) => {
-    s3Bucket.upload(params, (err, s3Response) => {
-      if (err) {
-        rej(err);
-      } else {
-        res(s3Response);
-      }
-    });
-  });
+	const BUCKET_NAME = process.env.AWS_EXPENSE_FILE_BUCKET;
+	const ACL_ACCESS = process.env.AWS_ACCESS_STATUS;
+	const params = {
+		Bucket: BUCKET_NAME,
+		Key: name,
+		Body: data,
+		ACL: ACL_ACCESS,
+	};
+	return new Promise((resolve, reject) => {
+		s3.upload(params, (err, data) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(data);
+			}
+		});
+	});
 }
 
+// Middleware function to download a report
 exports.downloadReport = async (req, res) => {
-  const t = await sequelize.transaction();
-  try {
-    const userExpenses = await Expense.findAll(
-      {
-        where: { UserId: req.user.id },
-      },
-      { transaction: t }
-    );
-    const stringifiedData = JSON.stringify(userExpenses);
-    const fileName = `Expenses_${req.user.id}_${new Date()} `;
-    const fileURL = await uploadToS3(stringifiedData, fileName);
-    await Reports.create(
-      {
-        fileUrl: fileURL.Location,
-        UserId: req.user.id,
-      },
-      { transaction: t }
-    );
-    await t.commit();
-    res.status(200).json({ fileURL: fileURL, success: true });
-  } catch (err) {
-    await t.rollback();
-    console.log(err);
-    res.status(500).json({ success: false });
-  }
+	try {
+		const userExpenses = await Expense.find({ user: req.user._id });
+		const stringifiedData = JSON.stringify(userExpenses);
+		const fileName = `Expenses_${req.user._id}_${new Date()}.json`;
+		const fileURL = await uploadToS3(stringifiedData, fileName);
+		await Reports.create({
+			fileUrl: fileURL.Location,
+			userId: req.user._id,
+		});
+		res.status(200).json({ fileURL, success: true });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ success: false });
+	}
 };
 
+// Middleware function to show reports
 exports.showReports = async (req, res) => {
-  try {
-    const response = await Reports.findAll({
-      where: { UserId: req.user.id },
-      attributes: ["fileUrl", "createdAt"],
-    });
-    res.status(200).json({
-      success: true,
-      message: "Succesfully retrieved files",
-      response,
-    });
-  } catch (error) {
-    res.status(500).json({ success: false });
-  }
+	try {
+		const reports = await Reports.find({ userId: req.user._id }, "fileUrl createdAt");
+		res.status(200).json({ success: true, message: "Successfully retrieved files", response: reports });
+	} catch (error) {
+		res.status(500).json({ success: false });
+	}
 };
