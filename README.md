@@ -4,25 +4,13 @@ This Expense Tracker project is a web-based application that allows users to man
 
 ## Features
 
-### Basic Features
+## Key Features
 
-1. **Add Expense**: Users can add new expenses with details like the date, category, amount, and description.
-
-2. **Delete Expense**: Users can delete existing expenses to keep their records up-to-date.
-
-3. **Edit Expense**: The edit feature allows users to modify the details of an expense, providing flexibility in managing their records.
-
-### Premium Features
-
-1. **Leaderboard**: Users can view a leaderboard to see their expense statistics compared to others.
-
-2. **Monthly Data**: This feature provides users with a summary of their monthly expenses, helping them understand their spending patterns.
-
-3. **Download Reports**: Users can generate and download expense reports for their records or further analysis.
-
-4. **Previous Downloads**: The system stores previously downloaded reports for easy access and reference.
-
-5. **Pagination**: The project offers pagination for a user-friendly browsing experience, especially when dealing with a large number of expenses.
+- ✅ Add, delete, and edit expenses
+- 📈 Premium analytics: Leaderboard, monthly data
+- 📊 Download expense reports
+- 📂 Access previous downloads
+- 📜 Pagination for easy navigation
 
 ## Technologies Used
 
