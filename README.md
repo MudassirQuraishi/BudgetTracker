@@ -2,8 +2,6 @@
 
 This Expense Tracker project is a web-based application that allows users to manage their expenses efficiently. It offers a range of essential features as well as premium capabilities to help users take control of their finances. The project is built using a Node.js and Express.js backend with SQL and Sequelize ORM for database operations, while the frontend is developed using HTML, CSS, and JavaScript with Axios for API calls. Razorpay payment gateway integration and deployment on AWS with S3 buckets for storing previous expenses are additional highlights of this project.
 
-## Features
-
 ## Key Features
 
 - ✅ Add, delete, and edit expenses
